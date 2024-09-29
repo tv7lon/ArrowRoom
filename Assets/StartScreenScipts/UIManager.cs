@@ -1,0 +1,49 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using TMPro;
+using UnityEngine;
+
+public class UIManager : MonoBehaviour
+{
+
+    [SerializeField] private TMP_Text messageLabel;
+    private string messagesPath;
+    private string[] messagesArray;
+    // Start is called before the first frame update
+    void Start()
+    {
+        messagesPath = Application.dataPath + "/messages.txt";
+        LoadMessages();
+        messageLabel.text = DisplayMessage();
+    }
+
+
+    private void LoadMessages()
+    {
+        //ned to use scnaners or similar 
+        if (File.Exists(messagesPath))
+        {
+            //puts each line into the message array
+            messagesArray = File.ReadAllLines(messagesPath);
+        }
+        else
+        {
+            Debug.Log("File not found. Cannot save username and password");
+        }
+    }
+
+    private string DisplayMessage()
+    {
+        int randInt = Random.Range(0, messagesArray.Length);
+        return messagesArray[randInt];
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    
+
+}
