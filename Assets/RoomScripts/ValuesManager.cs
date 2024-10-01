@@ -10,6 +10,7 @@ public class ValuesManager : MonoBehaviour
     [SerializeField] private Slider hungerBar;
     [SerializeField] private Slider boredomBar;
     [SerializeField] private Slider dangerBar;
+    [SerializeField] private AudioSource gameOverSound;
     private string barValuesPath;
     private string sessionStatsPath;
     private string deadAccountsPath;
@@ -41,7 +42,7 @@ public class ValuesManager : MonoBehaviour
     {
         AddDeadAccount();
         SceneManagerScript sms = new SceneManagerScript();
-        sms.LoadScene("GameOver");
+        sms.LoadScene("NewGame");
     }
 
     private void AddDeadAccount()

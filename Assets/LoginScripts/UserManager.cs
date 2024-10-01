@@ -44,14 +44,14 @@ public class UserManager : MonoBehaviour
     }
     public void AssignStartData()
     {
-        Debug.Log("Running assign start data");
+
         if (!File.Exists(sessionStatsPath))
         {
             Debug.Log("File not found. Cannot load start values.");
         }
         else
         {
-            Debug.Log("file exists");
+        
             string[] lineArray = null;
             string currentLine;
             using (StreamReader fileReader = new StreamReader(sessionStatsPath))
@@ -101,7 +101,7 @@ public class UserManager : MonoBehaviour
 
     public void LoadInventory()
     {
-        Debug.Log("running load inv");
+
         if (!File.Exists(inventoriesPath))
         {
             Debug.Log("File not found. Cannot load inventory.");
@@ -114,8 +114,8 @@ public class UserManager : MonoBehaviour
             {
                 while ((currentLine = fileReader.ReadLine()) != null)
                 {
-                    Debug.Log("in while");
-                    Debug.Log(currentLine);
+
+
                     lineArray = currentLine.Split("#");
                     if (lineArray[0].Equals(ActiveUser) && lineArray[1].Equals("dog"))
                     {

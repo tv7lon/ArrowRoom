@@ -131,8 +131,10 @@ public class MainScript : MonoBehaviour
         if (score > UserManager.Instance.HighScore) {
             UserManager.Instance.HighScore = score;
         }
-        SaveScore();
-        //decrease boredom 
+        if (score > 0) 
+        { 
+            SaveScore();
+        }
         RewriteBoredom(); 
     }
 

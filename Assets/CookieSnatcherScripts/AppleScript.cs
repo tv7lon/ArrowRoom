@@ -14,7 +14,7 @@ public class AppleScript : MonoBehaviour
         int randChance = Random.Range(0,100);
         if (randChance>= 85)
         {
-            //super dogSpeed
+            //super speed
             this.gameObject.GetComponent<Rigidbody2D>().gravityScale = superSpeed;
         }
     }

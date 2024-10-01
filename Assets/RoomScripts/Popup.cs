@@ -21,6 +21,8 @@ public class Popup : MonoBehaviour
         closeButton = this.gameObject.transform.Find("PopupButton").GetComponent<Button>();     
         closeButton.onClick.AddListener(ClickedPopup);
         DangerBar = GameObject.Find("DangerBar").GetComponent<DangerBar>();
+
+        //set image
         thisImage = this.gameObject.GetComponent<Image>();
         setImage();
         dangerMultiplyer = 10;

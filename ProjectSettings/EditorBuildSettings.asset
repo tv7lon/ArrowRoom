@@ -21,8 +21,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Arcade.unity
     guid: e2b711841a241da4d979ad3ccfabccc6
   - enabled: 1
-    path: Assets/Scenes/CookieSnatcher.unity
+    path: Assets/Scenes/AppleSnatcher.unity
     guid: 4793e964995a1f84ebf4eb0c1ca61b9d
+  - enabled: 1
+    path: Assets/Scenes/Sudoku.unity
+    guid: c8564ad3c86a1c84b802a1595b6828ab
   - enabled: 1
     path: Assets/Scenes/GameOver.unity
     guid: 1fbbf022f8b5ad949b17dcfd3dd2d225

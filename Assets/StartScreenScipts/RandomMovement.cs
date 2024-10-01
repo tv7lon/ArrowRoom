@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class RandomMovement : MonoBehaviour
 {
-    [SerializeField] private float dogSpeed; 
+    [SerializeField] private float speed; 
     private Vector3 targetPosition;
     private Animator anim;
 
@@ -59,6 +59,6 @@ public class RandomMovement : MonoBehaviour
     private void MoveTowardsRandom()
     {
         //current, towards, distance/ time
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, dogSpeed*Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed*Time.deltaTime);
     }
 }

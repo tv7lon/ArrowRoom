@@ -27,7 +27,7 @@ public class ItemStoreManager : MonoBehaviour
 
         inventoriesPath = Application.dataPath + "/inventories.txt";
         UserManager.Instance.LoadInventory();
-        Debug.Log("starting the inventory scrip");
+
         if (UserManager.Instance.HasDog)
         {
             SpawnPet("dog");
