@@ -13,11 +13,11 @@ public class LoginManager : MonoBehaviour
     private string accountsPath;
     SceneManagerScript sm;
 
-   
-        void Start()
+
+    void Start()
     {
         accountsPath = Application.dataPath + "/accounts.txt";
-       
+
         sm = new SceneManagerScript();
     }
 
@@ -51,10 +51,11 @@ public class LoginManager : MonoBehaviour
                 if (IsDeadAccount(usernameField.text))
                 {
                     errorLabel.text = "This username has already been used, you cannot restore this account :(";
-                }else if(!isValid)
+                }
+                else if (!isValid)
                 {
                     errorLabel.text = "Hmm it seems this account doesn't exist or you've entered the wrong details :(";
-                }     
+                }
             }
         }
         else
@@ -75,7 +76,8 @@ public class LoginManager : MonoBehaviour
                 string currentDeadUser;
                 while ((currentDeadUser = fileReader.ReadLine()) != null)
                 {
-                    if (userIn.Equals(currentDeadUser)){
+                    if (userIn.Equals(currentDeadUser))
+                    {
                         isDead = true;
                         break;
                     }
@@ -86,10 +88,10 @@ public class LoginManager : MonoBehaviour
         {
             Debug.Log("File not found. Cannot check dead user");
         }
- 
+
         return isDead;
     }
-    }
+}
 
 
 

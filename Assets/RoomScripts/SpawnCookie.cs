@@ -7,15 +7,15 @@ public class SpawnCookie : MonoBehaviour
 {
 
     [SerializeField] private GameObject cookiePrefab;
-    private int numCookiesSpawned;
     [SerializeField] private int maxCookiesAvailable;
     [SerializeField] private int resetTime;
-    [SerializeField] private TMP_Text maxCookiesLabel; 
+    [SerializeField] private TMP_Text maxCookiesLabel;
+    private int numCookiesSpawned;
 
     public void OnButtonClick()
     {
-        //prevents a cookie from spawning when space is pressed; numCookies initially set to 0 so make < maxCookiesAvailable
-        if (!Input.GetKeyDown(KeyCode.Space)&& numCookiesSpawned<maxCookiesAvailable)
+        //numCookies initially set to 0 so make < maxCookiesAvailable
+        if (numCookiesSpawned < maxCookiesAvailable)
         {
             Vector2 mousePos = Input.mousePosition;
 
@@ -24,15 +24,12 @@ public class SpawnCookie : MonoBehaviour
             Instantiate(cookiePrefab, new Vector3(worldPosition.x, worldPosition.y, -5f), Quaternion.identity);
             numCookiesSpawned++;
         }
-        else if (!Input.GetKeyDown(KeyCode.Space))
+        else
         {
             //call the method that will wait a few seconds then call method to set numcookiesspawned to 0 again
             maxCookiesLabel.text = "Wait a few seconds!";
             Invoke("ResetCookiesSpawned", resetTime);
         }
-            
-        
-       
     }
 
     private void ResetCookiesSpawned()

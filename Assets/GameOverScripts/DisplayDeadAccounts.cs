@@ -11,7 +11,7 @@ public class DisplayDeadAccounts : MonoBehaviour
     void Start()
     {
         deadAccountsPath = Application.dataPath + "/deadaccounts.txt";
-        usersLabel.text= LoadDeadAccounts().Substring(0, LoadDeadAccounts().Length-2);
+        usersLabel.text = LoadDeadAccounts().Substring(0, LoadDeadAccounts().Length - 2);
     }
 
     private string LoadDeadAccounts()

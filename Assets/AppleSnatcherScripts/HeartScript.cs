@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class HeartScript : MonoBehaviour
 {
-    MainScript ms;
+    SnatcherMain ms;
 
     void Start()
     {
-        ms = GameObject.Find("Scripts").GetComponent<MainScript>();
+        ms = GameObject.Find("Scripts").GetComponent<SnatcherMain>();
     }
 
     private void OnTriggerEnter2D(Collider2D heartCollision)
@@ -19,12 +19,12 @@ public class HeartScript : MonoBehaviour
             ms.AddHeart();
             Destroy(this.gameObject);
         }
-        else if(heartCollision.gameObject.name.Equals("Ground Border"))
-            {
+        else if (heartCollision.gameObject.name.Equals("Ground Border"))
+        {
             Destroy(this.gameObject);
         }
         //only destroy object under these collisions 
-        
+
     }
 
 }

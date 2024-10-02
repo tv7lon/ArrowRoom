@@ -9,7 +9,6 @@ public class DangerBar : MonoBehaviour
     [SerializeField] private float delay;
     [SerializeField] private float interval;
     [SerializeField] private int dangerIncrement;
-    private int dangerValue;
 
     void Start()
     {
@@ -20,11 +19,10 @@ public class DangerBar : MonoBehaviour
     public void IncreaseDanger()
     {
         slider.value= slider.value + dangerIncrement;
-        dangerValue = (int)slider.value;
     }
     public void DecreaseDanger(int decreasedAmount)
     {
-        slider.value = slider.value - decreasedAmount;
+        slider.value -= decreasedAmount;
     }
 
 

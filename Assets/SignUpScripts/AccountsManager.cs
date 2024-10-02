@@ -13,21 +13,21 @@ public class AccountsManager : MonoBehaviour
     [SerializeField] private TMP_Text outputLabel;
     [SerializeField] private TMP_Text passInfoText;
     private string accountsPath;
-    // Start is called before the first frame update
+
     void Start()
     {
-        accountsPath = Application.dataPath +  "/accounts.txt";
+        accountsPath = Application.dataPath + "/accounts.txt";
     }
 
     public void AddAccount()
     {
         char forbiddenChar = '#';
-   
+
         if (!File.Exists(accountsPath))
         {
             Debug.Log("File not found. Cannot save username and password");
         }
-        else if(usernameField.text.Replace(" ", "") =="" || passwordField.text.Replace(" ", "") == "")
+        else if (usernameField.text.Replace(" ", "") == "" || passwordField.text.Replace(" ", "") == "")
         {
             outputLabel.text = "Uh oh! You forgot to enter something...";
         }
@@ -38,7 +38,7 @@ public class AccountsManager : MonoBehaviour
         else
         {
             LoginManager lm = new LoginManager();
-            if (IsStrongPass(passwordField.text)&& !lm.IsDeadAccount(usernameField.text))
+            if (IsStrongPass(passwordField.text) && !lm.IsDeadAccount(usernameField.text))
             {
                 using (StreamWriter writer = new StreamWriter(accountsPath, true))
                 {
@@ -46,17 +46,17 @@ public class AccountsManager : MonoBehaviour
                     outputLabel.text = "Account added ^-^";
                 }
             }
-            else if(lm.IsDeadAccount(usernameField.text))
+            else if (lm.IsDeadAccount(usernameField.text))
             {
                 outputLabel.text = "This username has already been used sorry!";
-               
+
             }
             else
             {
                 outputLabel.text = "Your password is very guessable right now :( try a stronger one!";
                 highlightText();
             }
-            
+
         }
 
     }
@@ -64,17 +64,19 @@ public class AccountsManager : MonoBehaviour
     private Boolean IsStrongPass(string password)
     {
         int minChars = 8;
-        Boolean hasDigit = false, hasUpper =false, hasLower =false, hasSpecial =false;
+        Boolean hasDigit = false, hasUpper = false, hasLower = false, hasSpecial = false;
         for (int i = 0; i < password.Length; i++)
         {
             char c = password[i];
             if (Char.IsDigit(c))
             {
                 hasDigit = true;
-            }else if (Char.IsUpper(c))
+            }
+            else if (Char.IsUpper(c))
             {
                 hasUpper = true;
-            }else if (Char.IsLower(c))
+            }
+            else if (Char.IsLower(c))
             {
                 hasLower = true;
             }
@@ -84,7 +86,7 @@ public class AccountsManager : MonoBehaviour
             }
 
         }
-        if (hasDigit&&hasUpper&&hasLower&&hasSpecial&&password.Length>=minChars)
+        if (hasDigit && hasUpper && hasLower && hasSpecial && password.Length >= minChars)
         {
             return true;
         }
@@ -92,10 +94,10 @@ public class AccountsManager : MonoBehaviour
         {
             return false;
         }
-        
+
     }
 
-    //have to ensure no #s otherwise will affect database
+    //have to ensure no #s otherwise will affect txtfile
     private Boolean hasHashes(char forbiddenSpecial, string input)
     {
         Boolean hasHashes = false;
@@ -104,8 +106,7 @@ public class AccountsManager : MonoBehaviour
             char c = input[i];
             if (c == forbiddenSpecial)
             {
-               hasHashes = true;
-             //   Debug.Log(hasHashes + "" + i);
+                hasHashes = true;
                 break;
             }
         }
@@ -124,6 +125,4 @@ public class AccountsManager : MonoBehaviour
         passInfoText.text = colouredText;
 
     }
-
-    //check for duplicate usernames 
 }

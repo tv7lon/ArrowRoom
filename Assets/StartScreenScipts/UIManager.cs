@@ -10,7 +10,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text messageLabel;
     private string messagesPath;
     private string[] messagesArray;
-    // Start is called before the first frame update
     void Start()
     {
         messagesPath = Application.dataPath + "/messages.txt";
@@ -21,7 +20,6 @@ public class UIManager : MonoBehaviour
 
     private void LoadMessages()
     {
-        //ned to use scnaners or similar 
         if (File.Exists(messagesPath))
         {
             //puts each line into the message array
@@ -29,7 +27,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("File not found. Cannot save username and password");
+            Debug.Log("File not found. Cannot load messages");
         }
     }
 
@@ -38,12 +36,4 @@ public class UIManager : MonoBehaviour
         int randInt = Random.Range(0, messagesArray.Length);
         return messagesArray[randInt];
     }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    
-
 }

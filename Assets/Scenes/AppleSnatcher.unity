@@ -3568,8 +3568,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1713734221}
-  - component: {fileID: 1713734220}
   - component: {fileID: 1713734222}
+  - component: {fileID: 1713734223}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -3577,39 +3577,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1713734220
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1713734219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01fd310be8ebbb34c9101718383f260e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameObjectArr:
-  - {fileID: 6870151899577544412, guid: c869f919478494a4fa6f0f952e2707e0, type: 3}
-  - {fileID: 7910801572459271182, guid: 87b78eccbd0cb2b4fb5839d0e3f92bd3, type: 3}
-  - {fileID: 5521727640881401984, guid: 1338fea03442ad842a43e61b578fa072, type: 3}
-  leftBorder: -8
-  rightBorder: 8
-  spawnFreq: 0.75
-  gravityMultiplier: 1000
-  scoreboard: {fileID: 1942821726}
-  heartArr:
-  - {fileID: 765882341}
-  - {fileID: 580716476}
-  - {fileID: 651634167}
-  basket: {fileID: 1418283778}
-  gameOverCanvas: {fileID: 245960352}
-  gameOverScore: {fileID: 1995523384}
-  addHeartSound: {fileID: 1166566486}
-  gameOverSound: {fileID: 293354027}
-  loseHeartSound: {fileID: 1412237007}
-  everyTenSound: {fileID: 276254223}
-  caughtAppleSound: {fileID: 894800481}
 --- !u!4 &1713734221
 Transform:
   m_ObjectHideFlags: 0
@@ -3637,6 +3604,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4325bbf56a72c664f8ba38dc546216a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1713734223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713734219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcd6930922e84a34d9541f782b378465, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameObjectArr:
+  - {fileID: 6870151899577544412, guid: c869f919478494a4fa6f0f952e2707e0, type: 3}
+  - {fileID: 7910801572459271182, guid: 87b78eccbd0cb2b4fb5839d0e3f92bd3, type: 3}
+  - {fileID: 5521727640881401984, guid: 1338fea03442ad842a43e61b578fa072, type: 3}
+  leftBorder: -7.44
+  rightBorder: 7.44
+  spawnFreq: 0.5
+  gravityMultiplier: 2
+  scoreboard: {fileID: 1942821726}
+  heartArr:
+  - {fileID: 765882341}
+  - {fileID: 580716476}
+  - {fileID: 651634167}
+  basket: {fileID: 1418283778}
+  gameOverCanvas: {fileID: 245960352}
+  gameOverScore: {fileID: 1995523384}
+  addHeartSound: {fileID: 1166566486}
+  gameOverSound: {fileID: 293354027}
+  loseHeartSound: {fileID: 1412237007}
+  everyTenSound: {fileID: 276254223}
+  caughtAppleSound: {fileID: 894800481}
 --- !u!1 &1760127435
 GameObject:
   m_ObjectHideFlags: 0
@@ -4699,5 +4699,5 @@ SceneRoots:
   - {fileID: 1766942857}
   - {fileID: 1418283780}
   - {fileID: 1713734221}
-  - {fileID: 179620514}
   - {fileID: 245960356}
+  - {fileID: 179620514}

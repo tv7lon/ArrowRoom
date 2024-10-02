@@ -15,30 +15,31 @@ public class PopupGenerator : MonoBehaviour
     [SerializeField] private int topBorder;
     [SerializeField] private int bottomBorder;
     [SerializeField] private AudioSource spawnSound;
-    [SerializeField] private AudioSource closeSound; 
+    [SerializeField] private AudioSource closeSound;
 
-    // Start is called before the first frame update
+    private int dangerMultiplier;
+    public int GetDangerMultipler() { return dangerMultiplier; }
+    public void SetDangerMultiplier(int value) { dangerMultiplier = value; }
+
     void Start()
     {
         InvokeRepeating("SpawnPopup", delay, interval);
+        dangerMultiplier = 10;
     }
-
-    // Update is called once per frame
-    
 
     private void SpawnPopup()
     {
         //spawn a random gameobject from an array of popupPrefab gameobjects 
         RectTransform canvasRect = canvas.GetComponent<RectTransform>();
-        float randX = Random.Range(leftBorder,rightBorder);
-        float randY = Random.Range(bottomBorder,topBorder);
+        float randX = Random.Range(leftBorder, rightBorder);
+        float randY = Random.Range(bottomBorder, topBorder);
         Vector2 randPos = new Vector2(randX, randY);
-  
+
         GameObject spawnedPopUp = Instantiate(popupPrefab, randPos, Quaternion.identity);
         spawnSound.Play();
         //set as child of canvas so spawns on canvas 
         spawnedPopUp.transform.SetParent(canvasRect.transform, false);
-        
+
     }
 
     //close popup sound here bc cannot assign audiosource to prefab 

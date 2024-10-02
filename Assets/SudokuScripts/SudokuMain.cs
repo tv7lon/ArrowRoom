@@ -14,44 +14,69 @@ public class SudokuMain : MonoBehaviour
     [SerializeField] private TMP_Text difficultyLabel;
     [SerializeField] private TMP_Text timeLabel;
     [SerializeField] private TMP_Text coinsEarnedLabel;
+    [SerializeField] private AudioSource gameWin;
+    [SerializeField] private AudioSource gameLose;
+    [SerializeField] private GameObject solvedImg;
 
     private GameObject[] allCellsArr = new GameObject[81];
     private int[,] gridArray;
     private string sudokusPath;
-    private int size=0;
-    [HideInInspector] public string solvedStr;
+    private int size = 0;
+    private string solvedStr;
     private int[,] solvedGrid;
     private string randSudokuDiff;
+    private float timeToSolve;
+    private bool gameIsOver;
 
-    public GameObject[] GetAllCellsArr()
-    {
-        return allCellsArr;
-    }
-    public string GetSolvedStr()
-    {
-        Debug.Log(solvedStr);
-        return solvedStr;
-    }
     void Start()
     {
         sudokusPath = Application.dataPath + "/sudokus.txt";
+        solvedImg.SetActive(false);
         ReadInPuzzle();
         GenerateGridUI();
-        difficultyLabel.text = "Difficulty: " +randSudokuDiff;
+        difficultyLabel.text = "Difficulty: " + randSudokuDiff;
         GetSolution();
-        Debug.Log(solvedStr);
     }
 
     void Update()
     {
-        timeLabel.text = string.Format("{0:00}:{1:00}", Math.Round(Time.time, 1)/60, Math.Round(Time.time, 1),3600);
-        string userAnswer = GetUserAnswer();
-        if (userAnswer.Equals(solvedStr))
+        if (!gameIsOver)
         {
-            GameOver();
+            timeToSolve += Time.deltaTime;
+            int min = (int)Math.Floor(timeToSolve / 60);
+            int sec = (int)Math.Floor(timeToSolve % 60);
+            //0: refers to minutes, 1: refers to seconds, always formatted as 00 (two places)
+            timeLabel.text = string.Format("{0:00}:{1:00}", min, sec);
+            string userAnswer = GetUserAnswer();
+            if (userAnswer.Equals(solvedStr))
+            {
+                GameOver();
+                GameWin();
+            }
         }
-    }
 
+    }
+    private void GameWin()
+    {
+        gameWin.Play();
+        solvedImg.SetActive(true);
+
+        int coinsEarned = 0;
+        if (difficultyLabel.Equals("Evil")) coinsEarned = 4000;
+        else if (difficultyLabel.Equals("Hard")) coinsEarned = 2500;
+        else if (difficultyLabel.Equals("Medium")) coinsEarned = 1000;
+        else coinsEarned = 750;
+        coinsEarnedLabel.text = "$" + coinsEarned;
+        UserManager.Instance.Coins += coinsEarned;
+
+        if (timeToSolve < UserManager.Instance.QuickestTime)
+        {
+            //in seconds
+            UserManager.Instance.QuickestTime = timeToSolve;
+        }
+        ValuesManager vm = new ValuesManager();
+        vm.RewriteBoredom(40);
+    }
     private string GetUserAnswer()
     {
         string returnString = "";
@@ -74,23 +99,19 @@ public class SudokuMain : MonoBehaviour
             i++;
         }
         return returnString;
-        }
+    }
 
     private void GameOver()
     {
-        int coinsEarned=0;
+        gameIsOver = true;
         foreach (GameObject gm in allCellsArr)
         {
-            if (gm.name.Equals("InputCellPrefab(Clone"))
+            if (gm.name.Equals("InputCellPrefab(Clone)"))
             {
+                //set all as uneditable
                 gm.GetComponent<TMP_InputField>().interactable = false;
             }
-            if (difficultyLabel.Equals("Evil")) coinsEarned = 4000;
-            else if (difficultyLabel.Equals("Hard")) coinsEarned = 2500;
-            else if (difficultyLabel.Equals("Medium")) coinsEarned = 1000;
-            else coinsEarned = 750;
-            coinsEarnedLabel.text = coinsEarned.ToString();
-            UserManager.Instance.Coins += coinsEarned;
+
         }
     }
     public void NewGame()
@@ -98,8 +119,9 @@ public class SudokuMain : MonoBehaviour
         SceneManagerScript sms = new SceneManagerScript();
         sms.LoadScene("Sudoku");
     }
-        //reads in puzzle to the gridArray int[,]
-        private void ReadInPuzzle()
+
+    //reads in puzzle to the gridArray int[,]
+    private void ReadInPuzzle()
     {
         int size = 0;
         if (!File.Exists(sudokusPath))
@@ -132,7 +154,7 @@ public class SudokuMain : MonoBehaviour
                     cell++;
                 }
             }
-            
+
 
         }
     }
@@ -164,26 +186,26 @@ public class SudokuMain : MonoBehaviour
     }
     public void RevealSolution()
     {
-        int i= 0;
-        foreach (GameObject gm in allCellsArr)
+        if (!gameIsOver)
         {
-
-            if (gm.name.Equals("InputCellPrefab(Clone)"))
+            int i = 0;
+            foreach (GameObject gm in allCellsArr)
             {
 
-                allCellsArr[i].GetComponent<TMP_InputField>().text = solvedStr[i].ToString();
-                
+                if (gm.name.Equals("InputCellPrefab(Clone)"))
+                {
+                    allCellsArr[i].GetComponent<TMP_InputField>().text = solvedStr[i].ToString();
+                }
+                else
+                //it is just a static cell
+                {
+                    allCellsArr[i].GetComponentInChildren<TMP_Text>().text = solvedStr[i].ToString();
+                }
+                i++;
             }
-            else
-            //it is just a static cell
-            {
-                allCellsArr[i].GetComponentInChildren<TMP_Text>().text = solvedStr[i].ToString();
-                
-            }
-            i++;
+            gameLose.Play();
+            GameOver();
         }
-        GameOver();
-        
     }
     private string ConvertGridToString(int[,] gridToConvert)
     {

@@ -10,13 +10,15 @@ public class ValuesManager : MonoBehaviour
     [SerializeField] private Slider hungerBar;
     [SerializeField] private Slider boredomBar;
     [SerializeField] private Slider dangerBar;
-    [SerializeField] private AudioSource gameOverSound;
+    [SerializeField] private GameObject cookieImg;
+    [SerializeField] private GameObject boredomImg;
+    [SerializeField] private GameObject dangerImg;
+    [SerializeField] private Sprite skullImg;
+    [SerializeField] private AudioSource warningSound;
     private string barValuesPath;
     private string sessionStatsPath;
     private string deadAccountsPath;
-   
-    LoginManager lm;
-    private string activeUser ;
+    private string activeUser;
     private bool wroteDeadUser;
 
     void Start()
@@ -24,30 +26,47 @@ public class ValuesManager : MonoBehaviour
         barValuesPath = Application.dataPath + "/barvalues.txt";
         sessionStatsPath = Application.dataPath + "/sessionstats.txt";
         deadAccountsPath = Application.dataPath + "/deadaccounts.txt";
-        lm = new LoginManager();
         activeUser = UserManager.Instance.ActiveUser;
         LoadValues();
-        
-        }
+    }
 
     private void Update()
     {
-        if (hungerBar.value ==100|| boredomBar.value==100|| dangerBar.value == 100)
+        bool hasFullStats = hungerBar.value == 100 || boredomBar.value == 100 || dangerBar.value == 100;
+        if (hasFullStats)
         {
             DoGameOver();
+        }
+        else
+        {
+            if (hungerBar.value > 90)
+            {
+                cookieImg.GetComponent<Image>().sprite = skullImg;
+                warningSound.Play();
+            }
+            else if (boredomBar.value > 90)
+            {
+                boredomImg.GetComponent<Image>().sprite = skullImg;
+                warningSound.Play();
+            }
+            else if (dangerBar.value > 90)
+            {
+                dangerImg.GetComponent<Image>().sprite = skullImg;
+                warningSound.Play();
+            }
         }
     }
 
     private void DoGameOver()
     {
         AddDeadAccount();
-        SceneManagerScript sms = new SceneManagerScript();
-        sms.LoadScene("NewGame");
+        SceneManagerScript sms = GameObject.Find("Scripts").GetComponent<SceneManagerScript>();
+        sms.LoadScene("GameOver");
     }
 
     private void AddDeadAccount()
     {
-        if (!wroteDeadUser&&File.Exists(deadAccountsPath))
+        if (!wroteDeadUser && File.Exists(deadAccountsPath))
         {
             using (StreamWriter writer = new StreamWriter(deadAccountsPath, true))
             {
@@ -55,12 +74,11 @@ public class ValuesManager : MonoBehaviour
                 wroteDeadUser = true;
             }
         }
-        else
+        else if (!File.Exists(deadAccountsPath))
         {
-            Debug.Log("Cannot save dead user");
+            Debug.Log("Cannot save dead user.");
         }
-        
-        
+
     }
     public void SaveBarValues()
     {
@@ -73,12 +91,10 @@ public class ValuesManager : MonoBehaviour
         {
             using (StreamWriter writer = new StreamWriter(barValuesPath, true))
             {
-                writer.WriteLine(activeUser + "#" + hungerBar.value + "#" + boredomBar.value +"#" + dangerBar.value);
+                writer.WriteLine(activeUser + "#" + hungerBar.value + "#" + boredomBar.value + "#" + dangerBar.value);
             }
         }
     }
-
-
 
     public void SaveSessionStats()
     {
@@ -92,11 +108,11 @@ public class ValuesManager : MonoBehaviour
             using (StreamWriter writer = new StreamWriter(sessionStatsPath, true))
             {
                 //in seconds 
-                writer.WriteLine(activeUser + "#"+ (UserManager.Instance.SessionTimeEnd - UserManager.Instance.SessionTimeStart) + "#"+  UserManager.Instance.TotalCookiesFed + "#"+ UserManager.Instance.Coins);
+                writer.WriteLine(activeUser + "#" + (UserManager.Instance.SessionTimeEnd - UserManager.Instance.SessionTimeStart) + "#" + UserManager.Instance.TotalCookiesFed + "#" + UserManager.Instance.Coins + "#" + UserManager.Instance.QuickestTime);
             }
         }
-        //end this instance 
-        Destroy(UserManager.Instance);
+        //end this instance otherwise there will be multiple UserManagers when the user logs in
+        Destroy(UserManager.Instance.gameObject);
     }
 
     private void LoadValues()
@@ -108,16 +124,16 @@ public class ValuesManager : MonoBehaviour
         }
         else
         {
-              string[] lineArray = null;
-    string currentLine;
+            string[] lineArray = null;
+            string currentLine;
             using (StreamReader fileReader = new StreamReader(barValuesPath))
             {
                 //note** - read line automatically moves the reader to the next line
- 
+
                 while ((currentLine = fileReader.ReadLine()) != null)
                 {
                     lineArray = currentLine.Split('#');
-                    
+
                     if (lineArray[0].Equals(activeUser))
                     {
                         //set the values to the ones stores in places 1,2,3
@@ -127,6 +143,48 @@ public class ValuesManager : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+    public void RewriteBoredom(int boredomToDecrease)
+    {
+        //being called from a different scene so assign again - the start of this script will not run again
+        barValuesPath = Application.dataPath + "/barvalues.txt";
+        int boredomValue = 0;
+        if (!File.Exists(barValuesPath))
+        {
+            Debug.Log("File not found. Cannot load bar values.");
+        }
+        else
+        {
+            string[] lineArray = null;
+            string currentLine;
+            using (StreamReader fileReader = new StreamReader(barValuesPath))
+            {
+                while ((currentLine = fileReader.ReadLine()) != null)
+                {
+                    lineArray = currentLine.Split('#');
+                    if (lineArray[0].Equals(activeUser))
+                    {
+
+                        boredomValue = int.Parse(lineArray[2]);
+                        if (boredomValue > boredomToDecrease)
+                        {
+                            boredomValue -= boredomToDecrease;
+                        }
+                        else
+                        {
+                            boredomValue = 0;
+                        }
+
+                    }
+                }
+            }
+            using (StreamWriter writer = new StreamWriter(barValuesPath, true))
+            {
+                writer.WriteLine(UserManager.Instance.ActiveUser + "#" + int.Parse(lineArray[1]) + "#" + boredomValue + "#" + int.Parse(lineArray[3]));
+            }
+
+
         }
     }
 }

@@ -5,25 +5,25 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainScript : MonoBehaviour
+public class SnatcherMain : MonoBehaviour
 {
     [SerializeField] private GameObject[] gameObjectArr;
     [SerializeField] float leftBorder;
     [SerializeField] float rightBorder;
 
-    private float spawnY = 6f; 
+    private float spawnY = 6f;
     private float startDelay = 3f;
     private float newRatesInterval = 5f;
     [SerializeField] private float spawnFreq;
-    [SerializeField] private float gravityMultiplier; 
+    [SerializeField] private float gravityMultiplier;
 
     [SerializeField] private TMP_Text scoreboard;
     [SerializeField] private Image[] heartArr;
     [SerializeField] private GameObject basket;
     [SerializeField] private GameObject gameOverCanvas;
     [SerializeField] private TMP_Text gameOverScore;
-    private int numHearts = 3; 
-    private int score =0;
+    private int numHearts = 3;
+    private int score = 0;
     private bool gameOver;
     private int bombChance;
 
@@ -36,8 +36,8 @@ public class MainScript : MonoBehaviour
 
     //textfiles
     private string scoresPath;
-    private string barValuesPath; 
-    private string activeUser; 
+    private string barValuesPath;
+    private string activeUser;
 
     void Start()
     {
@@ -52,7 +52,7 @@ public class MainScript : MonoBehaviour
         activeUser = UserManager.Instance.ActiveUser;
 
     }
- 
+
     private int GenerateBombChance()
     {
         //sometimes bombs have a higher frequency or chance of spawning than apples 
@@ -88,15 +88,15 @@ public class MainScript : MonoBehaviour
                 Instantiate(gameObjectArr[2], (new Vector2(Random.Range(leftBorder, rightBorder), spawnY)), Quaternion.identity);
             }
         }
-        
+
     }
 
     public void AddScore()
     {
         caughtAppleSound.Play();
         score++;
-        scoreboard.text = score.ToString(); 
-        if(score%10 == 0)
+        scoreboard.text = score.ToString();
+        if (score % 10 == 0)
         {
             everyTenSound.Play();
         }
@@ -112,11 +112,11 @@ public class MainScript : MonoBehaviour
 
             if (numHearts < 1)
             {
-               DoGameOver();
+                DoGameOver();
             }
         }
-        
-        
+
+
     }
 
     private void DoGameOver()
@@ -127,15 +127,17 @@ public class MainScript : MonoBehaviour
         gameOverCanvas.SetActive(true);
         gameOverScore.text = "Score: " + score;
         UserManager.Instance.Coins += score * 50;
-        Debug.Log("Coins after win:" + UserManager.Instance.Coins);
-        if (score > UserManager.Instance.HighScore) {
+        UserManager.Instance.TotalApplesCaught += score;
+        if (score > UserManager.Instance.HighScore)
+        {
             UserManager.Instance.HighScore = score;
         }
-        if (score > 0) 
-        { 
+        if (score > 0)
+        {
             SaveScore();
         }
-        RewriteBoredom(); 
+        ValuesManager vm = new ValuesManager();
+        vm.RewriteBoredom(40);
     }
 
     public void AddHeart()
@@ -169,52 +171,10 @@ public class MainScript : MonoBehaviour
         }
     }
 
-    private void RewriteBoredom()
-    {
-        Debug.Log("running rewrite boredom");
-        int boredomValue = 0; 
-        if (!File.Exists(barValuesPath))
-        {
-            Debug.Log("File not found. Cannot load bar values.");
-        }
-        else
-        {
-            string[] lineArray = null;
-            string currentLine;
-            using (StreamReader fileReader = new StreamReader(barValuesPath))
-            {
-                while ((currentLine = fileReader.ReadLine()) != null)
-                {
-                    lineArray = currentLine.Split('#');
-                    if (lineArray[0].Equals(activeUser))
-                    {
-                        Debug.Log("active user =");
-                        boredomValue = int.Parse(lineArray[2]);
-                        Debug.Log(boredomValue + " before ");
-                        if (boredomValue > 20)
-                        {
-                            boredomValue -= 40;
-                            Debug.Log(boredomValue + " after ");
-                        }
-                        else
-                        {
-                            boredomValue = 0;
-                        }
-                      
-                    }
-                }
-            }
-            using (StreamWriter writer = new StreamWriter(barValuesPath, true))
-            {
-                writer.WriteLine(activeUser + "#" + int.Parse(lineArray[1]) + "#" + boredomValue + "#" + int.Parse(lineArray[3]));
-            }
 
-           
-        }
-    }
-   
-    }
-    
+
+}
+
 
 
 

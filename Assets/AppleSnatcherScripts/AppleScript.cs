@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class AppleScript : MonoBehaviour
 {
-    MainScript ms;
-    [SerializeField] private float superSpeed; 
+    SnatcherMain ms;
+    [SerializeField] private float superSpeed;
     void Start()
     {
         //get existing mainScript in the same scene 
-        ms = GameObject.Find("Scripts").GetComponent<MainScript>();
-        int randChance = Random.Range(0,100);
-        if (randChance>= 85)
+        ms = GameObject.Find("Scripts").GetComponent<SnatcherMain>();
+        int randChance = Random.Range(0, 100);
+        if (randChance >= 85)
         {
             //super speed
             this.gameObject.GetComponent<Rigidbody2D>().gravityScale = superSpeed;
@@ -22,15 +22,15 @@ public class AppleScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D appleCollision)
     {
-        if (appleCollision.gameObject.name.Equals ("Basket"))
+        if (appleCollision.gameObject.name.Equals("Basket"))
         {
-          ms.AddScore();
+            ms.AddScore();
             Destroy(this.gameObject);
         }
         //dropped an apple
         else if (appleCollision.gameObject.name.Equals("GroundBorder"))
         {
-           ms.MinusHeart();
+            ms.MinusHeart();
             Destroy(this.gameObject);
 
         }

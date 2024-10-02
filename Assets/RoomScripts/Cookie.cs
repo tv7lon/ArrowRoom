@@ -7,14 +7,7 @@ public class Cookie : MonoBehaviour
 {
     [SerializeField] private float expiryTime;
     SpawnCookie spawnCookieMethod;
-    
 
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
         expiryTime -= Time.deltaTime;
@@ -28,10 +21,5 @@ public class Cookie : MonoBehaviour
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane));
             transform.position = worldPosition;
         }
-
-         
-        
     }
-
-
 }

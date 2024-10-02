@@ -7,12 +7,12 @@ public class Popup : MonoBehaviour
 {
     private Button closeButton;
     private Button popupButton;
-    DangerBar DangerBar;
+    DangerBar db;
     [SerializeField] private int decreasedAmount;
     [SerializeField] private Sprite[] popupArray;
     private int dangerMultiplyer;
     private Image thisImage;
-    PopupGenerator PopupGenerator;
+    PopupGenerator pg;
 
     void Start()
     {
@@ -20,32 +20,31 @@ public class Popup : MonoBehaviour
         closeButton.onClick.AddListener(DestroyPopup);
         closeButton = this.gameObject.transform.Find("PopupButton").GetComponent<Button>();     
         closeButton.onClick.AddListener(ClickedPopup);
-        DangerBar = GameObject.Find("DangerBar").GetComponent<DangerBar>();
+        db = GameObject.Find("DangerBar").GetComponent<DangerBar>();
+        pg = GameObject.Find("Scripts").GetComponent<PopupGenerator>();
 
         //set image
         thisImage = this.gameObject.GetComponent<Image>();
         setImage();
-        dangerMultiplyer = 10;
-        PopupGenerator = GameObject.Find("Scripts").GetComponent<PopupGenerator>();
-
     }
 
     //if you correctly close a popup
     private void DestroyPopup()
     {
-        DangerBar.DecreaseDanger(decreasedAmount);
+        db.DecreaseDanger(decreasedAmount);
         Destroy(this.gameObject);
-        dangerMultiplyer = 1;
-        PopupGenerator.CloseSound();
+        //reset the multiplier
+        pg.SetDangerMultiplier(10);
+        pg.CloseSound();
     }
     private void ClickedPopup()
     {
-        PopupGenerator.CloseSound();
-        for (int i = 0; i < dangerMultiplyer; i++) {
-            DangerBar.IncreaseDanger();
+        pg.CloseSound();
+        for (int i = 0; i < pg.GetDangerMultipler(); i++) {
+            db.IncreaseDanger();
         }
         Destroy(this.gameObject);
-        dangerMultiplyer+=10;
+        pg.SetDangerMultiplier(pg.GetDangerMultipler()+10);
     }
 
     private void setImage()

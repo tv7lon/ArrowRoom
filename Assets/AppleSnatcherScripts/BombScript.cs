@@ -4,22 +4,24 @@ using UnityEngine;
 
 public class BombScript : MonoBehaviour
 {
-    MainScript ms;
+    SnatcherMain ms;
 
     void Start()
     {
-        ms = GameObject.Find("Scripts").GetComponent<MainScript>();
+        ms = GameObject.Find("Scripts").GetComponent<SnatcherMain>();
     }
-  
+
     private void OnTriggerEnter2D(Collider2D bombCollision)
     {
-        if (bombCollision.gameObject.name.Equals ("Basket"))
+        if (bombCollision.gameObject.name.Equals("Basket"))
         {
             //minus a life 
             ms.MinusHeart();
-            Destroy(this.gameObject); 
+            Destroy(this.gameObject);
 
-        }else if(bombCollision.gameObject.name.Equals ( "GroundBorder")){
+        }
+        else if (bombCollision.gameObject.name.Equals("GroundBorder"))
+        {
             Destroy(this.gameObject);
         }
     }

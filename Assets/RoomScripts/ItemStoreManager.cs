@@ -47,24 +47,21 @@ public class ItemStoreManager : MonoBehaviour
 
     public void BuyPet(string petBought)
     {
-        Debug.Log("runnign here");
         if (UserManager.Instance.Coins >=petPrice) 
         {
             if (!File.Exists(inventoriesPath))
             {
-                Debug.Log("File not found. Cannot save session values.");
+                Debug.Log("File not found. Cannot save bought pet.");
             }
             else
             {
                 using (StreamWriter writer = new StreamWriter(inventoriesPath, true))
                 {
-                    //in seconds 
                     writer.WriteLine(UserManager.Instance.ActiveUser + "#" + petBought);
                 }
             }
             UserManager.Instance.Coins-=petPrice;
             SpawnPet(petBought);
-
         }
         else
         {
@@ -79,6 +76,7 @@ public class ItemStoreManager : MonoBehaviour
 
     public void SpawnPet(string petToSpawn)
     {
+        //specific co ords
         Vector3 dogSpawn = new Vector3(0f, -3.38f, 0f);
         Vector3 catSpawn = new Vector3(-1.91f, -1.04f, 0f);
         if (petToSpawn.Equals("dog"))

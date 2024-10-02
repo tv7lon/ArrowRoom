@@ -15,6 +15,8 @@ public class StatsManager : MonoBehaviour
     [SerializeField] private TMP_Text cookiesFedLabel;
     [SerializeField] private TMP_Text highScoreLabel;
     [SerializeField] private TMP_Text coinsLabel;
+    [SerializeField] private TMP_Text quickestTimeLabel;
+    [SerializeField] private TMP_Text totalApplesCaughtLabel;
     private string activeUser;
     void Start()
     {
@@ -26,16 +28,14 @@ public class StatsManager : MonoBehaviour
         {
             UserManager.Instance.AssignStartData();
             UserManager.Instance.LoadHighScore();
-            UserManager.Instance.HasStartData = true;
         }
     }
 
     public void TogglePanel()
     {
-        //each time shopPanel is toggled it must read from usermanager instance
         statsPanel.SetActive(!panelIsActive);
         panelIsActive = !panelIsActive;
-       
+
     }
 
     private void Update()
@@ -44,10 +44,19 @@ public class StatsManager : MonoBehaviour
         {
             cookiesFedLabel.text = "Cookies fed: " + UserManager.Instance.TotalCookiesFed;
             coinsLabel.text = "$ " + UserManager.Instance.Coins;
-            highScoreLabel.text = "High score: " + UserManager.Instance.HighScore;
+            highScoreLabel.text = "Apple Snatcher HS: " + UserManager.Instance.HighScore;
             longestSessionLabel.text = "Longest session: " + Math.Round(UserManager.Instance.LongestSession / 60, 2) + " min";
+            totalApplesCaughtLabel.text = "Total Apples Caught: " + UserManager.Instance.TotalApplesCaught;
+            if (UserManager.Instance.QuickestTime == 86400)
+            {
+                quickestTimeLabel.text = "Quickest Sudoku Solve: None attempted.";
+            }
+            else
+            {
+                quickestTimeLabel.text = "Quickest Sudoku solve: " + Math.Round(UserManager.Instance.QuickestTime / 60, 2) + " min";
+            }
         }
     }
 }
 
-  
+
