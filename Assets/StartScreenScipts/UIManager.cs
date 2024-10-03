@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
     {
         messagesPath = Application.dataPath + "/messages.txt";
         LoadMessages();
-        messageLabel.text = DisplayMessage();
+        messageLabel.text = GetRandMessage();
     }
 
 
@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private string DisplayMessage()
+    private string GetRandMessage()
     {
         int randInt = Random.Range(0, messagesArray.Length);
         return messagesArray[randInt];

@@ -16,7 +16,7 @@ public class ValuesManager : MonoBehaviour
     [SerializeField] private Sprite skullImg;
     [SerializeField] private AudioSource warningSound;
     private string barValuesPath;
-    private string sessionStatsPath;
+
     private string deadAccountsPath;
     private string activeUser;
     private bool wroteDeadUser;
@@ -24,7 +24,6 @@ public class ValuesManager : MonoBehaviour
     void Start()
     {
         barValuesPath = Application.dataPath + "/barvalues.txt";
-        sessionStatsPath = Application.dataPath + "/sessionstats.txt";
         deadAccountsPath = Application.dataPath + "/deadaccounts.txt";
         activeUser = UserManager.Instance.ActiveUser;
         LoadValues();
@@ -94,25 +93,6 @@ public class ValuesManager : MonoBehaviour
                 writer.WriteLine(activeUser + "#" + hungerBar.value + "#" + boredomBar.value + "#" + dangerBar.value);
             }
         }
-    }
-
-    public void SaveSessionStats()
-    {
-        UserManager.Instance.SessionTimeEnd = Time.time;
-        if (!File.Exists(sessionStatsPath))
-        {
-            Debug.Log("File not found. Cannot save session values.");
-        }
-        else
-        {
-            using (StreamWriter writer = new StreamWriter(sessionStatsPath, true))
-            {
-                //in seconds 
-                writer.WriteLine(activeUser + "#" + (UserManager.Instance.SessionTimeEnd - UserManager.Instance.SessionTimeStart) + "#" + UserManager.Instance.TotalCookiesFed + "#" + UserManager.Instance.Coins + "#" + UserManager.Instance.QuickestTime);
-            }
-        }
-        //end this instance otherwise there will be multiple UserManagers when the user logs in
-        Destroy(UserManager.Instance.gameObject);
     }
 
     private void LoadValues()

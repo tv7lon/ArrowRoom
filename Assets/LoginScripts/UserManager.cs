@@ -29,8 +29,6 @@ public class UserManager : MonoBehaviour
 
         if (Instance == null)
         {
-            Instance = FindObjectOfType<UserManager>();
-
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
@@ -83,7 +81,7 @@ public class UserManager : MonoBehaviour
         }
     }
 
-    public void LoadHighScore()
+    public void LoadScore()
     {
 
         if (!File.Exists(scoresPath))

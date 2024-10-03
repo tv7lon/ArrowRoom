@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class DangerBar : MonoBehaviour
 {
-    [SerializeField] private Slider slider;
     [SerializeField] private float delay;
     [SerializeField] private float interval;
     [SerializeField] private int dangerIncrement;
@@ -18,11 +17,11 @@ public class DangerBar : MonoBehaviour
 
     public void IncreaseDanger()
     {
-        slider.value= slider.value + dangerIncrement;
+        this.GetComponent<Slider>().value= this.GetComponent<Slider>().value + dangerIncrement;
     }
     public void DecreaseDanger(int decreasedAmount)
     {
-        slider.value -= decreasedAmount;
+        this.GetComponent<Slider>().value -= decreasedAmount;
     }
 
 

@@ -7,7 +7,6 @@ public class RandomMovement : MonoBehaviour
 {
     [SerializeField] private float speed;
     private Vector3 targetPosition;
-    private Animator anim;
     void Start()
     {
         SetRandomPos();

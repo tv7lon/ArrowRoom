@@ -6,7 +6,6 @@ using UnityEngine;
 public class Cookie : MonoBehaviour
 {
     [SerializeField] private float expiryTime;
-    SpawnCookie spawnCookieMethod;
 
     void Update()
     {

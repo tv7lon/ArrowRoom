@@ -8,8 +8,6 @@ using UnityEngine;
 public class StatsManager : MonoBehaviour
 {
     private bool panelIsActive;
-    private string sessionStatsPath;
-    private string scoresPath;
     [SerializeField] private GameObject statsPanel;
     [SerializeField] private TMP_Text longestSessionLabel;
     [SerializeField] private TMP_Text cookiesFedLabel;
@@ -17,17 +15,18 @@ public class StatsManager : MonoBehaviour
     [SerializeField] private TMP_Text coinsLabel;
     [SerializeField] private TMP_Text quickestTimeLabel;
     [SerializeField] private TMP_Text totalApplesCaughtLabel;
-    private string activeUser;
+    private string sessionStatsPath;
     void Start()
     {
         statsPanel.SetActive(false);
         panelIsActive = false;
+        sessionStatsPath = Application.dataPath + "/sessionstats.txt";
 
         //set numcookies and coins
         if (!UserManager.Instance.HasStartData)
         {
             UserManager.Instance.AssignStartData();
-            UserManager.Instance.LoadHighScore();
+            UserManager.Instance.LoadScore();
         }
     }
 
@@ -38,6 +37,24 @@ public class StatsManager : MonoBehaviour
 
     }
 
+    public void SaveSessionStats()
+    {
+        UserManager.Instance.SessionTimeEnd = Time.time;
+        if (!File.Exists(sessionStatsPath))
+        {
+            Debug.Log("File not found. Cannot save session values.");
+        }
+        else
+        {
+            using (StreamWriter writer = new StreamWriter(sessionStatsPath, true))
+            {
+                //in seconds 
+                writer.WriteLine(UserManager.Instance.ActiveUser + "#" + (UserManager.Instance.SessionTimeEnd - UserManager.Instance.SessionTimeStart) + "#" + UserManager.Instance.TotalCookiesFed + "#" + UserManager.Instance.Coins + "#" + UserManager.Instance.QuickestTime);
+            }
+        }
+        //end this instance otherwise there will be multiple UserManagers when the user logs in
+        Destroy(UserManager.Instance.gameObject);
+    }
     private void Update()
     {
         if (panelIsActive)

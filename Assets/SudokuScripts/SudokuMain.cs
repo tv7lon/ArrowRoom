@@ -123,7 +123,7 @@ public class SudokuMain : MonoBehaviour
     //reads in puzzle to the gridArray int[,]
     private void ReadInPuzzle()
     {
-        int size = 0;
+        int counter = 0;
         if (!File.Exists(sudokusPath))
         {
             Debug.Log("File not found. Cannot read in random sudoku.");
@@ -136,8 +136,8 @@ public class SudokuMain : MonoBehaviour
             {
                 while ((currentLine = fileReader.ReadLine()) != null)
                 {
-                    sudokuArr[size] = currentLine;
-                    size++;
+                    sudokuArr[counter] = currentLine;
+                    counter++;
                 }
             }
             int randInt = UnityEngine.Random.Range(0, sudokuArr.Length);

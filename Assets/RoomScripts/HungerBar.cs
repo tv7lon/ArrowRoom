@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class HungerBar : MonoBehaviour
 {
-    [SerializeField] private Slider slider;
+
     [SerializeField] private float delay;
     [SerializeField] private float interval;
 
@@ -16,11 +16,11 @@ public class HungerBar : MonoBehaviour
     }
     private void IncreaseHunger()
     {
-        slider.value++;
+        this.GetComponent<Slider>().value++;
     }
     public void DecreaseHunger(int decreasedAmount)
     {
-        slider.value -= decreasedAmount;
+        this.GetComponent<Slider>().value -= decreasedAmount;
         UserManager.Instance.TotalCookiesFed++;
     }
 

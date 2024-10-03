@@ -10,7 +10,6 @@ public class Popup : MonoBehaviour
     DangerBar db;
     [SerializeField] private int decreasedAmount;
     [SerializeField] private Sprite[] popupArray;
-    private int dangerMultiplyer;
     private Image thisImage;
     PopupGenerator pg;
 
