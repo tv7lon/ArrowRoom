@@ -130,7 +130,7 @@ public class SudokuMain : MonoBehaviour
         }
         else
         {
-            string[] sudokuArr = new string[10];
+            string[] sudokuArr = new string[52];
             string currentLine = "";
             using (StreamReader fileReader = new StreamReader(sudokusPath))
             {

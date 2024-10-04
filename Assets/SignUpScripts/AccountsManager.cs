@@ -38,7 +38,7 @@ public class AccountsManager : MonoBehaviour
         else
         {
             LoginManager lm = new LoginManager();
-            if (IsStrongPass(passwordField.text) && !lm.IsDeadAccount(usernameField.text))
+            if (IsStrongPass(passwordField.text) && !lm.IsDeadAccount(usernameField.text) && !UsernameIsused())
             {
                 using (StreamWriter writer = new StreamWriter(accountsPath, true))
                 {
@@ -48,8 +48,12 @@ public class AccountsManager : MonoBehaviour
             }
             else if (lm.IsDeadAccount(usernameField.text))
             {
-                outputLabel.text = "This username has already been used sorry!";
+                outputLabel.text = "This account cannot be accessed anymore sorry!";
 
+            }
+            else if (UsernameIsused())
+            {
+                outputLabel.text = "This username is already in use sorry!";
             }
             else
             {
@@ -59,6 +63,29 @@ public class AccountsManager : MonoBehaviour
 
         }
 
+    }
+    private bool UsernameIsused()
+    {
+        bool isUsed = false;
+        if (File.Exists(accountsPath))
+        {
+
+            using (StreamReader fileReader = new StreamReader(accountsPath))
+            {
+                string currentLine;
+                while ((currentLine = fileReader.ReadLine()) != null)
+                {
+                    string[] user = currentLine.Split("#");
+                    string currentUsername = user[0];
+                    if (usernameField.text.Equals(currentUsername)){
+                        isUsed = true;
+                        return isUsed;
+                    }
+                   
+                }
+            }
+        }
+        return isUsed;
     }
 
     private Boolean IsStrongPass(string password)
