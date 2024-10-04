@@ -74,7 +74,7 @@ public class ItemStoreManager : MonoBehaviour
         shopLabel.text = "";
     }
 
-    public void SpawnPet(string petToSpawn)
+    private void SpawnPet(string petToSpawn)
     {
         //specific co ords
         Vector3 dogSpawn = new Vector3(0f, -3.38f, 0f);
